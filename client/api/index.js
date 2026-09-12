@@ -34,12 +34,12 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Import routes
-const authRoutes = require('../../server/routes/authRoutes');
-const categoryRoutes = require('../../server/routes/categoryRoutes');
-const transactionRoutes = require('../../server/routes/transactionRoutes');
-const budgetRoutes = require('../../server/routes/budgetRoutes');
-const dashboardRoutes = require('../../server/routes/dashboardRoutes');
+// Import routes relative to client directory
+const authRoutes = require('../server/routes/authRoutes');
+const categoryRoutes = require('../server/routes/categoryRoutes');
+const transactionRoutes = require('../server/routes/transactionRoutes');
+const budgetRoutes = require('../server/routes/budgetRoutes');
+const dashboardRoutes = require('../server/routes/dashboardRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -56,6 +56,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.use(require('../../server/middleware/errorHandler'));
+app.use(require('../server/middleware/errorHandler'));
 
 module.exports = app;

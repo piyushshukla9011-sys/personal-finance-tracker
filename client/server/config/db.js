@@ -1,0 +1,40 @@
+const mongoose = require('mongoose');
+
+let mongoMemoryServer = null;
+
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+
+  try {
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/finance-tracker';
+    console.log(`Connecting to MongoDB...`);
+    
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 15000,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`❌ MongoDB connection error details:`, error.message);
+    if (error.stack) console.error(error.stack);
+    
+    // Fallback to in-memory DB only in local development (not on Vercel/production)
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      console.warn(`Initializing MongoMemoryServer fallback for local development...`);
+      try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        mongoMemoryServer = await MongoMemoryServer.create();
+        const memUri = mongoMemoryServer.getUri();
+        const conn = await mongoose.connect(memUri);
+        console.log(`In-Memory MongoDB Connected: ${conn.connection.host}`);
+        return;
+      } catch (memError) {
+        console.error(`Failed to start MongoMemoryServer: ${memError.message}`);
+      }
+    }
+    throw error;
+  }
+};
+
+module.exports = connectDB;
