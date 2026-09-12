@@ -1,7 +1,22 @@
 import axios from 'axios';
 
+const getBaseUrl = () => {
+  let envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) {
+    return '/api';
+  }
+  // Trim and remove trailing slashes
+  envUrl = envUrl.trim().replace(/\/+$/, '');
+  
+  // If absolute URL provided without /api suffix (e.g. https://finance-tracker-api.onrender.com)
+  if (envUrl.startsWith('http') && !envUrl.endsWith('/api')) {
+    envUrl = `${envUrl}/api`;
+  }
+  return envUrl;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },

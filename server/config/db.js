@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 let mongoMemoryServer = null;
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/finance-tracker';
     console.log(`Connecting to MongoDB...`);
@@ -15,8 +19,8 @@ const connectDB = async () => {
     console.error(`❌ MongoDB connection error details:`, error.message);
     if (error.stack) console.error(error.stack);
     
-    // Fallback to in-memory DB only in local development
-    if (process.env.NODE_ENV !== 'production') {
+    // Fallback to in-memory DB only in local development (not on Vercel/production)
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
       console.warn(`Initializing MongoMemoryServer fallback for local development...`);
       try {
         const { MongoMemoryServer } = require('mongodb-memory-server');
