@@ -12,7 +12,8 @@ const connectDB = async () => {
     });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`MongoDB connection failed: ${error.message}`);
+    console.error(`❌ MongoDB connection error details:`, error.message);
+    if (error.stack) console.error(error.stack);
     
     // Fallback to in-memory DB only in local development
     if (process.env.NODE_ENV !== 'production') {
