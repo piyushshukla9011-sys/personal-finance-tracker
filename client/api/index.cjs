@@ -34,7 +34,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Import routes relative to client directory
+// Import routes
 const authRoutes = require('../server/routes/authRoutes');
 const categoryRoutes = require('../server/routes/categoryRoutes');
 const transactionRoutes = require('../server/routes/transactionRoutes');
