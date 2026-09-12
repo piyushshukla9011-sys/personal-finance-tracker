@@ -33,6 +33,7 @@ const connectDB = async () => {
         console.error(`Failed to start MongoMemoryServer: ${memError.message}`);
       }
     }
+    throw error;
   }
 };
 
