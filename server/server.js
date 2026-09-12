@@ -24,6 +24,11 @@ app.use('/api/transactions', require('./routes/transactionRoutes'));
 app.use('/api/budgets', require('./routes/budgetRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.send('Personal Finance Tracker API is running');
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
