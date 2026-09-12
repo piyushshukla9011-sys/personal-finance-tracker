@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 let mongoMemoryServer = null;
 
@@ -19,6 +18,7 @@ const connectDB = async () => {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(`Initializing MongoMemoryServer fallback for local development...`);
       try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
         mongoMemoryServer = await MongoMemoryServer.create();
         const memUri = mongoMemoryServer.getUri();
         const conn = await mongoose.connect(memUri);
